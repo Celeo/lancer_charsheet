@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite'
-import preact from '@preact/preset-vite'
-import tailwindcss from '@tailwindcss/vite'
-import { VitePWA } from 'vite-plugin-pwa'
+import { defineConfig } from 'vite';
+import preact from '@preact/preset-vite';
+import tailwindcss from '@tailwindcss/vite';
+import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   base: '/lancer-charsheet/',
@@ -31,4 +31,4 @@ export default defineConfig({
       },
     }),
   ],
-})
+});

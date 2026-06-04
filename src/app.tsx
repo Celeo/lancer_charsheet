@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'preact/hooks'
-import { CharacterProvider } from './store'
-import { Nav } from './components/Nav'
-import { CombatTracker } from './views/CombatTracker'
-import { PilotSheet } from './views/PilotSheet'
-import { MechSheet } from './views/MechSheet'
+import { useState, useEffect } from 'preact/hooks';
+import { CharacterProvider } from './store';
+import { Nav } from './components/Nav';
+import { CombatTracker } from './views/CombatTracker';
+import { PilotSheet } from './views/PilotSheet';
+import { MechSheet } from './views/MechSheet';
 
 function getRoute() {
-  return window.location.hash || '#combat'
+  return window.location.hash || '#combat';
 }
 
 export function App() {
-  const [route, setRoute] = useState(getRoute)
+  const [route, setRoute] = useState(getRoute);
 
   useEffect(() => {
-    const handler = () => setRoute(getRoute())
-    window.addEventListener('hashchange', handler)
-    return () => window.removeEventListener('hashchange', handler)
-  }, [])
+    const handler = () => setRoute(getRoute());
+    window.addEventListener('hashchange', handler);
+    return () => window.removeEventListener('hashchange', handler);
+  }, []);
 
   return (
     <CharacterProvider>
@@ -29,5 +29,5 @@ export function App() {
         <Nav current={route} />
       </div>
     </CharacterProvider>
-  )
+  );
 }

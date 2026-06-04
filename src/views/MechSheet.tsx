@@ -1,6 +1,6 @@
-import { useState } from 'preact/hooks'
-import { useCharacter } from '../store'
-import { StatRow } from '../components/StatRow'
+import { useState } from 'preact/hooks';
+import { useCharacter } from '../store';
+import { StatRow } from '../components/StatRow';
 import {
   frames,
   getFrame,
@@ -9,14 +9,14 @@ import {
   weaponsForMount,
   systems as allSystems,
   mountSlots,
-} from '../game-data'
+} from '../game-data';
 
 export function MechSheet() {
-  const { character, derived, updateMech } = useCharacter()
-  const { mech } = character
-  const [sysSearch, setSysSearch] = useState('')
+  const { character, derived, updateMech } = useCharacter();
+  const { mech } = character;
+  const [sysSearch, setSysSearch] = useState('');
 
-  const frame = getFrame(mech.frameId)
+  const frame = getFrame(mech.frameId);
 
   function setWeapon(mountIdx: number, slotIdx: number, weaponId: string | null) {
     const mounts = mech.mounts.map((m, mi) =>
@@ -25,35 +25,32 @@ export function MechSheet() {
             ...m,
             weapons: m.weapons.map((w, si) => (si === slotIdx ? weaponId : w)),
           }
-        : m
-    )
-    updateMech({ mounts })
+        : m,
+    );
+    updateMech({ mounts });
   }
 
   function addSystem(id: string) {
-    if (mech.systems.includes(id)) return
-    updateMech({ systems: [...mech.systems, id] })
-    setSysSearch('')
+    if (mech.systems.includes(id)) return;
+    updateMech({ systems: [...mech.systems, id] });
+    setSysSearch('');
   }
 
   function removeSystem(id: string) {
-    updateMech({ systems: mech.systems.filter((s) => s !== id) })
+    updateMech({ systems: mech.systems.filter((s) => s !== id) });
   }
 
   const usedSp = mech.systems.reduce((acc, id) => {
-    const sys = getSystem(id)
-    return acc + (sys?.sp ?? 0)
-  }, 0)
+    const sys = getSystem(id);
+    return acc + (sys?.sp ?? 0);
+  }, 0);
 
   const filteredSystems = allSystems.filter(
-    (s) =>
-      !mech.systems.includes(s.id) &&
-      s.name.toLowerCase().includes(sysSearch.toLowerCase())
-  )
+    (s) => !mech.systems.includes(s.id) && s.name.toLowerCase().includes(sysSearch.toLowerCase()),
+  );
 
   return (
     <div class="space-y-5 pb-4">
-
       {/* ── Frame Selection ── */}
       <section>
         <div class="section-label">// FRAME</div>
@@ -72,9 +69,7 @@ export function MechSheet() {
             <div class="section-label">FRAME</div>
             <select
               value={mech.frameId}
-              onChange={(e) =>
-                updateMech({ frameId: (e.target as HTMLSelectElement).value })
-              }
+              onChange={(e) => updateMech({ frameId: (e.target as HTMLSelectElement).value })}
               class="select select-sm w-full font-mono"
             >
               {frames.map((f) => (
@@ -165,16 +160,19 @@ export function MechSheet() {
           <div class="section-label">// LOADOUT — WEAPONS</div>
           <div class="card bg-base-200 p-4 space-y-4">
             {frame.mounts.map((mountType, mountIdx) => {
-              const slots = mountSlots(mountType)
-              const mountData = mech.mounts[mountIdx]
+              const slots = mountSlots(mountType);
+              const mountData = mech.mounts[mountIdx];
 
               return (
-                <div key={mountIdx} class="border-b border-base-300/50 pb-4 last:border-0 last:pb-0">
+                <div
+                  key={mountIdx}
+                  class="border-b border-base-300/50 pb-4 last:border-0 last:pb-0"
+                >
                   <div class="section-label mb-2">{mountType} MOUNT</div>
                   {slots.map((slotSize, slotIdx) => {
-                    const selectedId = mountData?.weapons[slotIdx] ?? null
-                    const selected = selectedId ? getWeapon(selectedId) : null
-                    const options = weaponsForMount(slotSize === 'Flex' ? 'Main' : slotSize)
+                    const selectedId = mountData?.weapons[slotIdx] ?? null;
+                    const selected = selectedId ? getWeapon(selectedId) : null;
+                    const options = weaponsForMount(slotSize === 'Flex' ? 'Main' : slotSize);
 
                     return (
                       <div key={slotIdx} class="space-y-1 mb-2 last:mb-0">
@@ -186,8 +184,8 @@ export function MechSheet() {
                         <select
                           value={selectedId ?? ''}
                           onChange={(e) => {
-                            const v = (e.target as HTMLSelectElement).value
-                            setWeapon(mountIdx, slotIdx, v || null)
+                            const v = (e.target as HTMLSelectElement).value;
+                            setWeapon(mountIdx, slotIdx, v || null);
                           }}
                           class="select select-xs w-full font-mono"
                         >
@@ -203,23 +201,24 @@ export function MechSheet() {
                             {selected.damage && (
                               <div>
                                 {selected.damage.map((d) => `${d.val} ${d.type}`).join(', ')}
-                                {selected.range && ` — ${selected.range.map((r) => `${r.type} ${r.val}`).join(', ')}`}
+                                {selected.range &&
+                                  ` — ${selected.range.map((r) => `${r.type} ${r.val}`).join(', ')}`}
                               </div>
                             )}
                             {selected.tags && selected.tags.length > 0 && (
                               <div class="text-base-content/40">
-                                {selected.tags.map((t) =>
-                                  t.id.replace('tg_', '').replace(/_/g, ' ')
-                                ).join(' · ')}
+                                {selected.tags
+                                  .map((t) => t.id.replace('tg_', '').replace(/_/g, ' '))
+                                  .join(' · ')}
                               </div>
                             )}
                           </div>
                         )}
                       </div>
-                    )
+                    );
                   })}
                 </div>
-              )
+              );
             })}
           </div>
         </section>
@@ -227,26 +226,30 @@ export function MechSheet() {
 
       {/* ── Systems ── */}
       <section>
-        <div class="section-label">// SYSTEMS ({usedSp}/{derived.mechSp} SP)</div>
+        <div class="section-label">
+          // SYSTEMS ({usedSp}/{derived.mechSp} SP)
+        </div>
         <div class="card bg-base-200 p-4 space-y-3">
-
           {mech.systems.map((id) => {
-            const sys = getSystem(id)
-            if (!sys) return null
+            const sys = getSystem(id);
+            if (!sys) return null;
             return (
-              <div key={id} class="flex items-start gap-2 border-b border-base-300/50 pb-2 last:border-0 last:pb-0">
+              <div
+                key={id}
+                class="flex items-start gap-2 border-b border-base-300/50 pb-2 last:border-0 last:pb-0"
+              >
                 <button
                   onClick={() => removeSystem(id)}
                   class="text-error/60 hover:text-error text-xs font-mono shrink-0 mt-0.5"
-                >✕</button>
+                >
+                  ✕
+                </button>
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center justify-between gap-2">
                     <span class="text-sm font-mono font-bold text-base-content/80 truncate">
                       {sys.name}
                     </span>
-                    <span class="text-xs font-mono text-base-content/40 shrink-0">
-                      {sys.sp} SP
-                    </span>
+                    <span class="text-xs font-mono text-base-content/40 shrink-0">{sys.sp} SP</span>
                   </div>
                   {sys.effect && (
                     <p
@@ -256,7 +259,7 @@ export function MechSheet() {
                   )}
                 </div>
               </div>
-            )
+            );
           })}
 
           {/* Add system */}
@@ -279,7 +282,8 @@ export function MechSheet() {
                     <div class="flex-1 min-w-0">
                       <div class="font-bold text-base-content truncate">{s.name}</div>
                       <div class="text-base-content/40 text-[0.6rem]">
-                        [{s.source}] {s.type} — {s.license}{s.license_level > 0 ? ` LL${s.license_level}` : ''}
+                        [{s.source}] {s.type} — {s.license}
+                        {s.license_level > 0 ? ` LL${s.license_level}` : ''}
                       </div>
                     </div>
                     <div class="text-base-content/50 shrink-0 font-bold">{s.sp}SP</div>
@@ -290,7 +294,6 @@ export function MechSheet() {
           </div>
         </div>
       </section>
-
     </div>
-  )
+  );
 }

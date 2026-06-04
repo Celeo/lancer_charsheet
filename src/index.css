@@ -1,6 +1,6 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "daisyui" {
-  themes: ["night --default"];
+  themes: [ 'night --default'];
 }
 
 /* Lancer dark theme overrides — applied over night base */
@@ -29,7 +29,7 @@
 html,
 body {
   margin: 0;
-  font-family: ui-monospace, "JetBrains Mono", "Fira Code", Consolas, monospace;
+  font-family: ui-monospace, 'JetBrains Mono', 'Fira Code', Consolas, monospace;
   background-color: var(--color-base-100);
   color: var(--color-base-content);
 }

@@ -1,22 +1,21 @@
-import { useCharacter } from '../store'
-import { Counter } from '../components/Counter'
-import { BoxTracker } from '../components/BoxTracker'
-import { MECH_STATUSES } from '../game-data'
+import { useCharacter } from '../store';
+import { Counter } from '../components/Counter';
+import { BoxTracker } from '../components/BoxTracker';
+import { MECH_STATUSES } from '../game-data';
 
 export function CombatTracker() {
-  const { character, derived, updateCombat, resetCombat } = useCharacter()
-  const { combat } = character
+  const { character, derived, updateCombat, resetCombat } = useCharacter();
+  const { combat } = character;
 
   const toggleStatus = (s: string) => {
     const next = combat.statuses.includes(s)
       ? combat.statuses.filter((x) => x !== s)
-      : [...combat.statuses, s]
-    updateCombat({ statuses: next })
-  }
+      : [...combat.statuses, s];
+    updateCombat({ statuses: next });
+  };
 
   return (
     <div class="space-y-5 pb-4">
-
       {/* Header */}
       <div class="flex items-center justify-between">
         <div>
@@ -24,12 +23,13 @@ export function CombatTracker() {
             {character.meta.callsign || '[ CALLSIGN ]'}
           </div>
           <div class="font-mono font-bold text-base-content/70 text-sm">
-            {character.mech.name || character.mech.frameId.replace('mf_', '').replace(/_/g, ' ').toUpperCase()}
+            {character.mech.name ||
+              character.mech.frameId.replace('mf_', '').replace(/_/g, ' ').toUpperCase()}
           </div>
         </div>
         <button
           onClick={() => {
-            if (confirm('Reset combat state to full health?')) resetCombat()
+            if (confirm('Reset combat state to full health?')) resetCombat();
           }}
           class="btn btn-xs btn-ghost text-base-content/40 hover:text-base-content font-mono tracking-wider"
         >
@@ -41,7 +41,6 @@ export function CombatTracker() {
       <section>
         <div class="section-label">// MECH STATUS</div>
         <div class="card bg-base-200 p-4 space-y-4">
-
           <Counter
             label="HP"
             value={combat.mechHp}
@@ -85,19 +84,20 @@ export function CombatTracker() {
             </div>
             <div class="flex gap-1.5 flex-wrap">
               {Array.from({ length: derived.mechRepairCap }, (_, i) => {
-                const used = i < combat.repairsUsed
+                const used = i < combat.repairsUsed;
                 return (
                   <button
                     key={i}
                     onClick={() => updateCombat({ repairsUsed: used ? i : i + 1 })}
                     title={used ? 'Click to restore' : 'Click to use repair'}
                     class={`w-9 h-9 border-2 transition-all
-                      ${used
-                        ? 'bg-transparent border-base-content/20'
-                        : 'bg-success border-transparent'
+                      ${
+                        used
+                          ? 'bg-transparent border-base-content/20'
+                          : 'bg-success border-transparent'
                       }`}
                   />
-                )
+                );
               })}
             </div>
           </div>
@@ -111,14 +111,20 @@ export function CombatTracker() {
                   onClick={() => updateCombat({ burn: Math.max(0, combat.burn - 1) })}
                   class="btn btn-xs btn-ghost font-mono font-bold"
                   disabled={combat.burn <= 0}
-                >−</button>
-                <span class={`font-mono font-bold text-lg w-6 text-center ${combat.burn > 0 ? 'text-error' : 'text-base-content/30'}`}>
+                >
+                  −
+                </button>
+                <span
+                  class={`font-mono font-bold text-lg w-6 text-center ${combat.burn > 0 ? 'text-error' : 'text-base-content/30'}`}
+                >
                   {combat.burn}
                 </span>
                 <button
                   onClick={() => updateCombat({ burn: combat.burn + 1 })}
                   class="btn btn-xs btn-ghost font-mono font-bold"
-                >+</button>
+                >
+                  +
+                </button>
               </div>
             </div>
 
@@ -155,7 +161,7 @@ export function CombatTracker() {
         <div class="section-label">// CONDITIONS & STATUSES</div>
         <div class="flex flex-wrap gap-2">
           {MECH_STATUSES.map((s) => {
-            const active = combat.statuses.includes(s)
+            const active = combat.statuses.includes(s);
             return (
               <button
                 key={s}
@@ -165,11 +171,10 @@ export function CombatTracker() {
               >
                 {s}
               </button>
-            )
+            );
           })}
         </div>
       </section>
-
     </div>
-  )
+  );
 }

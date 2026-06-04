@@ -1,19 +1,19 @@
 interface NavProps {
-  current: string
+  current: string;
 }
 
 const TABS = [
   { hash: '#combat', label: 'Combat', icon: '⚔' },
   { hash: '#pilot', label: 'Pilot', icon: '◈' },
   { hash: '#mech', label: 'Mech', icon: '⬡' },
-] as const
+] as const;
 
 export function Nav({ current }: NavProps) {
   return (
     <nav class="fixed bottom-0 inset-x-0 bg-base-200 border-t border-base-300 nav-safe z-50">
       <div class="flex">
         {TABS.map(({ hash, label, icon }) => {
-          const active = current === hash
+          const active = current === hash;
           return (
             <a
               key={hash}
@@ -22,13 +22,15 @@ export function Nav({ current }: NavProps) {
                 ${active ? 'text-primary' : 'text-base-content/50 hover:text-base-content'}`}
             >
               <span class="text-base leading-none">{icon}</span>
-              <span class={`text-[0.6rem] font-bold tracking-widest uppercase ${active ? 'text-primary' : ''}`}>
+              <span
+                class={`text-[0.6rem] font-bold tracking-widest uppercase ${active ? 'text-primary' : ''}`}
+              >
                 {label}
               </span>
             </a>
-          )
+          );
         })}
       </div>
     </nav>
-  )
+  );
 }

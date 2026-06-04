@@ -1,13 +1,13 @@
-import { useState } from 'preact/hooks'
+import { useState } from 'preact/hooks';
 
 interface CounterProps {
-  label: string
-  value: number
-  max: number
-  min?: number
-  onChange: (v: number) => void
-  progressClass?: string  // daisyUI progress color class
-  warn?: boolean          // show warning color on bar when high
+  label: string;
+  value: number;
+  max: number;
+  min?: number;
+  onChange: (v: number) => void;
+  progressClass?: string; // daisyUI progress color class
+  warn?: boolean; // show warning color on bar when high
 }
 
 export function Counter({
@@ -19,19 +19,19 @@ export function Counter({
   progressClass = 'progress-primary',
   warn = false,
 }: CounterProps) {
-  const [editing, setEditing] = useState(false)
-  const [draft, setDraft] = useState('')
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState('');
 
-  const clamp = (v: number) => Math.max(min, Math.min(max, v))
+  const clamp = (v: number) => Math.max(min, Math.min(max, v));
 
-  const pct = max > 0 ? value / max : 0
-  const warnActive = warn && pct > 0.75
-  const barClass = warnActive ? 'progress-warning' : progressClass
+  const pct = max > 0 ? value / max : 0;
+  const warnActive = warn && pct > 0.75;
+  const barClass = warnActive ? 'progress-warning' : progressClass;
 
   function commitEdit() {
-    const n = parseInt(draft, 10)
-    if (!isNaN(n)) onChange(clamp(n))
-    setEditing(false)
+    const n = parseInt(draft, 10);
+    if (!isNaN(n)) onChange(clamp(n));
+    setEditing(false);
   }
 
   return (
@@ -51,17 +51,16 @@ export function Counter({
         ) : (
           <button
             class="font-mono text-sm hover:text-primary transition-colors cursor-text"
-            onClick={() => { setDraft(String(value)); setEditing(true) }}
+            onClick={() => {
+              setDraft(String(value));
+              setEditing(true);
+            }}
           >
             {value} <span class="text-base-content/40">/ {max}</span>
           </button>
         )}
       </div>
-      <progress
-        class={`progress ${barClass} w-full h-2.5`}
-        value={value}
-        max={max}
-      />
+      <progress class={`progress ${barClass} w-full h-2.5`} value={value} max={max} />
       <div class="flex justify-between mt-1.5 gap-2">
         <button
           onClick={() => onChange(clamp(value - 1))}
@@ -79,5 +78,5 @@ export function Counter({
         </button>
       </div>
     </div>
-  )
+  );
 }

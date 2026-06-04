@@ -1,8 +1,8 @@
 interface StatRowProps {
-  label: string
-  value: string | number
-  sub?: string | number
-  accent?: boolean
+  label: string;
+  value: string | number;
+  sub?: string | number;
+  accent?: boolean;
 }
 
 export function StatRow({ label, value, sub, accent }: StatRowProps) {
@@ -13,18 +13,16 @@ export function StatRow({ label, value, sub, accent }: StatRowProps) {
       </span>
       <span class={`font-mono font-bold text-sm ${accent ? 'text-primary' : 'text-base-content'}`}>
         {value}
-        {sub !== undefined && (
-          <span class="text-base-content/40 text-xs ml-1">/ {sub}</span>
-        )}
+        {sub !== undefined && <span class="text-base-content/40 text-xs ml-1">/ {sub}</span>}
       </span>
     </div>
-  )
+  );
 }
 
 interface HASEStatProps {
-  label: string
-  value: number
-  onChange: (v: number) => void
+  label: string;
+  value: number;
+  onChange: (v: number) => void;
 }
 
 export function HASEStat({ label, value, onChange }: HASEStatProps) {
@@ -41,7 +39,9 @@ export function HASEStat({ label, value, onChange }: HASEStatProps) {
         >
           −
         </button>
-        <span class={`font-mono font-bold text-sm w-6 text-center ${value > 0 ? 'text-primary' : value < 0 ? 'text-error' : 'text-base-content'}`}>
+        <span
+          class={`font-mono font-bold text-sm w-6 text-center ${value > 0 ? 'text-primary' : value < 0 ? 'text-error' : 'text-base-content'}`}
+        >
           {value > 0 ? `+${value}` : value}
         </span>
         <button
@@ -53,5 +53,5 @@ export function HASEStat({ label, value, onChange }: HASEStatProps) {
         </button>
       </div>
     </div>
-  )
+  );
 }
