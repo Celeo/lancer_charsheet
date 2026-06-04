@@ -1,7 +1,7 @@
 // Typed wrappers around lancer-data + Lancer rules math
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore — lancer-data has no bundled types
-import * as ld from 'lancer-data';
+import * as ld from '@massif/lancer-data';
 import type { Character, DerivedStats, MountWeaponSlot } from './types';
 
 // ─── Raw data types ──────────────────────────────────────────────────────────
