@@ -5,12 +5,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-pnpm dev          # dev server at http://localhost:5173/lancer-charsheet/
-pnpm build        # tsc type-check + Vite production build → dist/
-pnpm preview      # serve the production build locally
+pnpm dev             # dev server at http://localhost:5173/lancer-charsheet/
+pnpm build           # tsc type-check + Vite production build → dist/
+pnpm preview         # serve the production build locally
+pnpm format          # reformat all files with Prettier
+pnpm format:check    # check formatting without writing (used in CI)
 ```
 
-There is no test suite or linter config — TypeScript's strict compiler flags (`noUnusedLocals`, `noUnusedParameters`) serve as the primary code quality gate. `pnpm build` runs `tsc -b` first and will fail on type errors.
+There is no test suite. TypeScript's strict compiler flags (`noUnusedLocals`, `noUnusedParameters`) are the primary code quality gate — `pnpm build` runs `tsc -b` first and fails on type errors. Prettier (`semi: true`, `singleQuote: true`, `printWidth: 100`) enforces formatting; config is in `.prettierrc`.
 
 ## Architecture
 
