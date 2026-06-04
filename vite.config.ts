@@ -10,7 +10,7 @@ export default defineConfig({
     preact(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg'],
+      includeAssets: ['favicon.svg', 'icon-192.png', 'icon-512.png', 'icon-maskable.png'],
       manifest: {
         name: 'Lancer Character Sheet',
         short_name: 'Lancer',
@@ -22,10 +22,22 @@ export default defineConfig({
         start_url: '/lancer_charsheet/',
         icons: [
           {
-            src: 'favicon.svg',
-            sizes: 'any',
-            type: 'image/svg+xml',
-            purpose: 'any maskable',
+            src: 'icon-192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: 'icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: 'icon-maskable.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
           },
         ],
       },

@@ -24,7 +24,7 @@
 
 ```bash
 pnpm install
-pnpm dev        # http://localhost:5173/lancer-charsheet/
+pnpm dev        # http://localhost:5173/lancer_charsheet/
 ```
 
 ### Production build
@@ -36,7 +36,7 @@ pnpm preview    # serve dist/ locally to verify before deploy
 
 ### Deploy to GitHub Pages
 
-The `base` in `vite.config.ts` is set to `/lancer-charsheet/`. If your repository is named differently, update that value before building. Push the contents of `dist/` to your `gh-pages` branch (or configure GitHub Pages to deploy from `dist/` on `main`).
+The `base` in `vite.config.ts` is set to `/lancer_charsheet/` to match the repository name. If you fork this under a different name, update that value and the PWA `start_url` in `vite.config.ts` before building.
 
 ## Data Attribution
 
