@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  base: '/lancer-charsheet/',
+  base: '/lancer_charsheet/',
   plugins: [
     tailwindcss(),
     preact(),
@@ -19,7 +19,7 @@ export default defineConfig({
         background_color: '#0a0f1a',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/lancer-charsheet/',
+        start_url: '/lancer_charsheet/',
         icons: [
           {
             src: 'favicon.svg',

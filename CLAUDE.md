@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-pnpm dev             # dev server at http://localhost:5173/lancer-charsheet/
+pnpm dev             # dev server at http://localhost:5173/lancer_charsheet/
 pnpm build           # tsc type-check + Vite production build → dist/
 pnpm preview         # serve the production build locally
 pnpm format          # reformat all files with Prettier
@@ -40,7 +40,7 @@ src/
 
 **PWA:** `vite-plugin-pwa` generates a service worker (`dist/sw.js`) and `manifest.webmanifest`. Service worker is registered via `registerSW.js` injected by the plugin.
 
-**Deploy:** `base: '/lancer-charsheet/'` in `vite.config.ts` targets GitHub Pages at that subpath. All asset paths and the PWA `start_url` reflect this.
+**Deploy:** `base: '/lancer_charsheet/'` in `vite.config.ts` targets GitHub Pages at that subpath. All asset paths and the PWA `start_url` reflect this.
 
 ## Key constraints
 
