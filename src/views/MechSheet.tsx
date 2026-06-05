@@ -177,7 +177,7 @@ export function MechSheet() {
                     return (
                       <div key={slotIdx} class="space-y-1 mb-2 last:mb-0">
                         {slots.length > 1 && (
-                          <div class="text-[0.6rem] text-base-content/40 font-mono tracking-widest uppercase">
+                          <div class="text-[0.6rem] text-base-content/60 font-mono tracking-widest uppercase">
                             {slotSize} slot
                           </div>
                         )}
@@ -206,7 +206,7 @@ export function MechSheet() {
                               </div>
                             )}
                             {selected.tags && selected.tags.length > 0 && (
-                              <div class="text-base-content/40">
+                              <div class="text-base-content/60">
                                 {selected.tags
                                   .map((t) => t.id.replace('tg_', '').replace(/_/g, ' '))
                                   .join(' · ')}
@@ -249,7 +249,7 @@ export function MechSheet() {
                     <span class="text-sm font-mono font-bold text-base-content/80 truncate">
                       {sys.name}
                     </span>
-                    <span class="text-xs font-mono text-base-content/40 shrink-0">{sys.sp} SP</span>
+                    <span class="text-xs font-mono text-base-content/60 shrink-0">{sys.sp} SP</span>
                   </div>
                   {sys.effect && (
                     <p
@@ -281,7 +281,7 @@ export function MechSheet() {
                   >
                     <div class="flex-1 min-w-0">
                       <div class="font-bold text-base-content truncate">{s.name}</div>
-                      <div class="text-base-content/40 text-[0.6rem]">
+                      <div class="text-base-content/60 text-[0.6rem]">
                         [{s.source}] {s.type} — {s.license}
                         {s.license_level > 0 ? ` LL${s.license_level}` : ''}
                       </div>

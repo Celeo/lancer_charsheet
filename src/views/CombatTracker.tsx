@@ -19,7 +19,7 @@ export function CombatTracker() {
       {/* Header */}
       <div class="flex items-center justify-between">
         <div>
-          <div class="text-xs text-base-content/40 tracking-widest uppercase">
+          <div class="text-xs text-base-content/60 tracking-widest uppercase">
             {character.meta.callsign || '[ CALLSIGN ]'}
           </div>
           <div class="font-mono font-bold text-base-content/70 text-sm">
@@ -31,7 +31,7 @@ export function CombatTracker() {
           onClick={() => {
             if (confirm('Reset combat state to full health?')) resetCombat();
           }}
-          class="btn btn-xs btn-ghost text-base-content/40 hover:text-base-content font-mono tracking-wider"
+          class="btn btn-xs btn-ghost text-base-content/60 hover:text-base-content font-mono tracking-wider"
         >
           [RESET]
         </button>
@@ -84,17 +84,17 @@ export function CombatTracker() {
             </div>
             <div class="flex gap-1.5 flex-wrap">
               {Array.from({ length: derived.mechRepairCap }, (_, i) => {
-                const used = i < combat.repairsUsed;
+                const filled = i < derived.mechRepairCap - combat.repairsUsed;
                 return (
                   <button
                     key={i}
-                    onClick={() => updateCombat({ repairsUsed: used ? i : i + 1 })}
-                    title={used ? 'Click to restore' : 'Click to use repair'}
+                    onClick={() => updateCombat({ repairsUsed: filled ? combat.repairsUsed + 1 : combat.repairsUsed - 1 })}
+                    title={filled ? 'Click to use repair' : 'Click to restore'}
                     class={`w-9 h-9 border-2 transition-all
                       ${
-                        used
-                          ? 'bg-transparent border-base-content/20'
-                          : 'bg-success border-transparent'
+                        filled
+                          ? 'bg-success border-success'
+                          : 'bg-transparent border-base-content/50'
                       }`}
                   />
                 );
@@ -115,7 +115,7 @@ export function CombatTracker() {
                   −
                 </button>
                 <span
-                  class={`font-mono font-bold text-lg w-6 text-center ${combat.burn > 0 ? 'text-error' : 'text-base-content/30'}`}
+                  class={`font-mono font-bold text-lg w-6 text-center ${combat.burn > 0 ? 'text-error' : 'text-base-content/50'}`}
                 >
                   {combat.burn}
                 </span>
@@ -133,7 +133,7 @@ export function CombatTracker() {
               <button
                 onClick={() => updateCombat({ coreActive: !combat.coreActive })}
                 class={`btn btn-sm font-mono text-xs tracking-wider w-full
-                  ${combat.coreActive ? 'btn-primary' : 'btn-ghost border border-base-content/20'}`}
+                  ${combat.coreActive ? 'btn-primary' : 'btn-ghost border border-base-content/30'}`}
               >
                 {combat.coreActive ? 'ACTIVE' : 'STANDBY'}
               </button>
@@ -167,7 +167,7 @@ export function CombatTracker() {
                 key={s}
                 onClick={() => toggleStatus(s)}
                 class={`btn btn-xs font-mono tracking-wider
-                  ${active ? 'btn-error' : 'btn-ghost border border-base-content/20 opacity-60 hover:opacity-100'}`}
+                  ${active ? 'btn-error' : 'btn-ghost border border-base-content/30 opacity-60 hover:opacity-100'}`}
               >
                 {s}
               </button>

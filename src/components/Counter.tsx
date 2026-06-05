@@ -56,7 +56,7 @@ export function Counter({
               setEditing(true);
             }}
           >
-            {value} <span class="text-base-content/40">/ {max}</span>
+            {value} <span class="text-base-content/60">/ {max}</span>
           </button>
         )}
       </div>

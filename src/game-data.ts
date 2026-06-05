@@ -91,6 +91,7 @@ export interface LancerSystem {
   actions?: unknown[];
   passive_name?: string;
   passive_effect?: string;
+  bonuses?: Array<{ id: string; val: number | string }>;
 }
 
 export interface LancerTalent {
@@ -194,10 +195,15 @@ export function calcGrit(ll: number): number {
 }
 
 export function calcDerived(char: Character): DerivedStats {
-  const { ll, agility, systems, engineering, armor } = char.pilot;
+  const { ll, hull, agility, systems, engineering, armor } = char.pilot;
   const grit = calcGrit(ll);
   const frame = getFrame(char.mech.frameId);
   const fs = frame?.stats;
+
+  const systemHpBonus = char.mech.systems.reduce((sum, id) => {
+    const bonus = getSystem(id)?.bonuses?.find((b) => b.id === 'hp');
+    return sum + (bonus ? Number(bonus.val) : 0);
+  }, 0);
 
   return {
     grit,
@@ -207,7 +213,7 @@ export function calcDerived(char: Character): DerivedStats {
     pilotEdef: 10 + systems,
     pilotSpeed: 4 + Math.floor(agility / 2),
     // Mech derived (frame base + HASE)
-    mechHpMax: (fs?.hp ?? 10) + grit * 2,
+    mechHpMax: (fs?.hp ?? 10) + grit * 2 + hull * 2 + systemHpBonus,
     mechHeatCap: (fs?.heatcap ?? 6) + engineering,
     mechRepairCap: (fs?.repcap ?? 5) + grit,
     mechEvasion: (fs?.evasion ?? 8) + agility,

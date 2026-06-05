@@ -13,7 +13,7 @@ export function StatRow({ label, value, sub, accent }: StatRowProps) {
       </span>
       <span class={`font-mono font-bold text-sm ${accent ? 'text-primary' : 'text-base-content'}`}>
         {value}
-        {sub !== undefined && <span class="text-base-content/40 text-xs ml-1">/ {sub}</span>}
+        {sub !== undefined && <span class="text-base-content/60 text-xs ml-1">/ {sub}</span>}
       </span>
     </div>
   );

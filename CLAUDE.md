@@ -32,7 +32,7 @@ src/
 
 **Game data:** `lancer-data` (npm, deprecated but valid for core book content) is imported in `game-data.ts` with a `// @ts-ignore` because it ships no types. All consumers import from `game-data.ts`, never directly from `lancer-data`.
 
-**Lancer rules math** lives entirely in `game-data.ts → calcDerived()`. Key formulas: GRIT = floor(LL/2); mech HP = frame HP + GRIT×2; heat cap = frame heatcap + Engineering; repair cap = frame repcap + GRIT; evasion = frame evasion + Agility; E-def = frame edef + Systems; save target = 10 + GRIT.
+**Lancer rules math** lives entirely in `game-data.ts → calcDerived()`. Key formulas: GRIT = floor(LL/2); mech HP = frame HP + GRIT×2 + Hull×2 + system HP bonuses (e.g. Personalizations +2); heat cap = frame heatcap + Engineering; repair cap = frame repcap + GRIT; evasion = frame evasion + Agility; E-def = frame edef + Systems; save target = 10 + GRIT.
 
 **Styling:** Tailwind v4 via `@tailwindcss/vite` plugin (no `tailwind.config.js`). daisyUI v5 loaded via `@plugin "daisyui"` in `index.css` with the `night` theme as the base. Lancer-specific color overrides sit in `:root` in `index.css` (higher specificity than daisyUI's `:where(:root)`). The custom `.section-label` utility class is defined in `index.css`.
 

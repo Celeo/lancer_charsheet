@@ -89,7 +89,7 @@ export function PilotSheet() {
           <div class="flex items-center justify-between mb-3">
             <div>
               <span class="font-mono font-bold text-2xl text-primary">LL{pilot.ll}</span>
-              <span class="text-base-content/40 text-xs ml-2 font-mono">GRIT +{derived.grit}</span>
+              <span class="text-base-content/60 text-xs ml-2 font-mono">GRIT +{derived.grit}</span>
             </div>
             <div class="flex items-center gap-2">
               <button
@@ -264,7 +264,7 @@ export function PilotSheet() {
                           ${
                             rank >= r
                               ? 'bg-primary border-primary text-primary-content'
-                              : 'border-base-content/25 text-base-content/40'
+                              : 'border-base-content/35 text-base-content/60'
                           }`}
                       >
                         {r}

@@ -33,7 +33,7 @@ export function BoxTracker({
                 ${
                   intact
                     ? `${colorClass} border-transparent`
-                    : 'bg-transparent border-base-content/25 hover:border-base-content/50'
+                    : 'bg-transparent border-base-content/35 hover:border-base-content/50'
                 }`}
             />
           );
