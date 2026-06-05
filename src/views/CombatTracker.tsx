@@ -88,7 +88,11 @@ export function CombatTracker() {
                 return (
                   <button
                     key={i}
-                    onClick={() => updateCombat({ repairsUsed: filled ? combat.repairsUsed + 1 : combat.repairsUsed - 1 })}
+                    onClick={() =>
+                      updateCombat({
+                        repairsUsed: filled ? combat.repairsUsed + 1 : combat.repairsUsed - 1,
+                      })
+                    }
                     title={filled ? 'Click to use repair' : 'Click to restore'}
                     class={`w-9 h-9 border-2 transition-all
                       ${

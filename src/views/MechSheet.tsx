@@ -97,6 +97,7 @@ export function MechSheet() {
           <StatRow label="SPEED" value={derived.mechSpeed} />
           <StatRow label="SENSORS" value={derived.mechSensors} />
           <StatRow label="SAVE TARGET" value={derived.mechSave} />
+          <StatRow label="ATTACK BONUS" value={`+${derived.grit}`} />
           <StatRow label="TECH ATTACK" value={`+${derived.mechTechAttack}`} />
           <StatRow label="SP" value={`${usedSp} / ${derived.mechSp}`} />
           <StatRow label="SIZE" value={derived.mechSize} />

@@ -191,11 +191,11 @@ export function defaultMounts(frame: LancerFrame): MountWeaponSlot[] {
 // ─── Derived stat calculations (Lancer core rules) ───────────────────────────
 
 export function calcGrit(ll: number): number {
-  return Math.floor(ll / 2);
+  return Math.ceil(ll / 2);
 }
 
 export function calcDerived(char: Character): DerivedStats {
-  const { ll, hull, agility, systems, engineering, armor } = char.pilot;
+  const { ll, hull, agility, systems, engineering } = char.pilot;
   const grit = calcGrit(ll);
   const frame = getFrame(char.mech.frameId);
   const fs = frame?.stats;
@@ -208,23 +208,23 @@ export function calcDerived(char: Character): DerivedStats {
   return {
     grit,
     // Pilot derived
-    pilotHpMax: 10 + grit,
-    pilotEvasion: 10 + agility,
-    pilotEdef: 10 + systems,
-    pilotSpeed: 4 + Math.floor(agility / 2),
+    pilotHpMax: 6 + grit,
+    pilotEvasion: 10,
+    pilotEdef: 10,
+    pilotSpeed: 4,
     // Mech derived (frame base + HASE)
-    mechHpMax: (fs?.hp ?? 10) + grit * 2 + hull * 2 + systemHpBonus,
+    mechHpMax: (fs?.hp ?? 10) + grit + hull * 2 + systemHpBonus,
     mechHeatCap: (fs?.heatcap ?? 6) + engineering,
-    mechRepairCap: (fs?.repcap ?? 5) + grit,
+    mechRepairCap: (fs?.repcap ?? 5) + Math.floor(hull / 2),
     mechEvasion: (fs?.evasion ?? 8) + agility,
     mechEdef: (fs?.edef ?? 8) + systems,
-    mechSpeed: fs?.speed ?? 4,
+    mechSpeed: (fs?.speed ?? 4) + Math.floor(agility / 2),
     mechSave: 10 + grit,
     mechTechAttack: (fs?.tech_attack ?? 0) + systems,
     mechSensors: fs?.sensor_range ?? 10,
-    mechSp: fs?.sp ?? 6,
+    mechSp: (fs?.sp ?? 6) + grit + Math.floor(systems / 2),
     mechSize: fs?.size ?? 1,
-    mechArmor: (fs?.armor ?? 0) + armor,
+    mechArmor: fs?.armor ?? 0,
   };
 }
 

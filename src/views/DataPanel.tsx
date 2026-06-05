@@ -56,8 +56,8 @@ export function DataPanel() {
       <div>
         <div class="section-label">Data</div>
         <p class="text-base-content/60 text-sm mt-1">
-          Export your character to a JSON file to back it up or move it to another browser. Import
-          a previously exported file to restore it.
+          Export your character to a JSON file to back it up or move it to another browser. Import a
+          previously exported file to restore it.
         </p>
       </div>
 
