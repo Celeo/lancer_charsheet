@@ -30,7 +30,7 @@ src/
 
 **Data flow:** `useCharacter()` returns `{ character, derived, updateMeta, updatePilot, updateMech, updateCombat, resetCombat }`. `derived` is re-computed from `character` on every render via `calcDerived()` in `game-data.ts` — there is no separate derived-state cache.
 
-**Game data:** `lancer-data` (npm, deprecated but valid for core book content) is imported in `game-data.ts` with a `// @ts-ignore` because it ships no types. All consumers import from `game-data.ts`, never directly from `lancer-data`.
+**Game data:** `@massif/lancer-data` (the official Massif Press package) is imported in `game-data.ts` with a `// @ts-ignore` because it ships no types. All consumers import from `game-data.ts`, never directly from `@massif/lancer-data`.
 
 **Lancer rules math** lives entirely in `game-data.ts → calcDerived()`. Key formulas: GRIT = floor(LL/2); mech HP = frame HP + GRIT×2 + Hull×2 + system HP bonuses (e.g. Personalizations +2); heat cap = frame heatcap + Engineering; repair cap = frame repcap + GRIT; evasion = frame evasion + Agility; E-def = frame edef + Systems; save target = 10 + GRIT.
 
