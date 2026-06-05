@@ -33,6 +33,7 @@ interface CharacterContextValue {
   updateMech: (partial: Partial<MechConfig>) => void;
   updateCombat: (partial: Partial<CombatState>) => void;
   resetCombat: () => void;
+  importCharacter: (c: Character) => void;
 }
 
 export const CharacterContext = createContext<CharacterContextValue>(
@@ -83,6 +84,10 @@ export function CharacterProvider({ children }: CharacterProviderProps) {
     setCharacter((c) => ({ ...c, combat: { ...c.combat, ...partial } }));
   }, []);
 
+  const importCharacter = useCallback((c: Character) => {
+    setCharacter(c);
+  }, []);
+
   const resetCombat = useCallback(() => {
     setCharacter((c) => {
       const d = calcDerived(c);
@@ -113,6 +118,7 @@ export function CharacterProvider({ children }: CharacterProviderProps) {
     updateMech,
     updateCombat,
     resetCombat,
+    importCharacter,
   };
 
   return <CharacterContext.Provider value={value}>{children}</CharacterContext.Provider>;

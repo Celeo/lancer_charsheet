@@ -6,6 +6,7 @@ const TABS = [
   { hash: '#combat', label: 'Combat', icon: '⚔' },
   { hash: '#pilot', label: 'Pilot', icon: '◈' },
   { hash: '#mech', label: 'Mech', icon: '⬡' },
+  { hash: '#data', label: 'Data', icon: '⬇' },
 ] as const;
 
 export function Nav({ current }: NavProps) {
