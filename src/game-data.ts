@@ -115,6 +115,14 @@ export interface LancerTagDef {
   description?: string;
 }
 
+export interface LancerCoreBonus {
+  id: string;
+  name: string;
+  source: string;
+  effect: string;
+  description?: string;
+}
+
 // ─── Exported typed collections ──────────────────────────────────────────────
 
 export const frames: LancerFrame[] = (ld.frames as LancerFrame[]).filter(
@@ -125,6 +133,7 @@ export const systems: LancerSystem[] = ld.systems as LancerSystem[];
 export const talents: LancerTalent[] = ld.talents as LancerTalent[];
 export const skills: LancerSkill[] = ld.skills as LancerSkill[];
 export const tagDefs: LancerTagDef[] = ld.tags as LancerTagDef[];
+export const coreBonuses: LancerCoreBonus[] = ld.core_bonuses as LancerCoreBonus[];
 
 export function getFrame(id: string): LancerFrame | undefined {
   return frames.find((f) => f.id === id);
@@ -148,6 +157,10 @@ export function getSkill(id: string): LancerSkill | undefined {
 
 export function getTag(id: string): LancerTagDef | undefined {
   return tagDefs.find((t) => t.id === id);
+}
+
+export function getCoreBonus(id: string): LancerCoreBonus | undefined {
+  return coreBonuses.find((cb) => cb.id === id);
 }
 
 // ─── Weapons filtered by what a mount accepts ────────────────────────────────
@@ -271,6 +284,7 @@ export const DEFAULT_CHARACTER: Character = {
       frames.find((f) => f.id === 'mf_standard_pattern_i_everest') ?? frames[1],
     ),
     systems: [],
+    coreBonuses: [],
   },
   combat: {
     mechHp: 12, // Everest HP at LL0 (10 + 0*2)
