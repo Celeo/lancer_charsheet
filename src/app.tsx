@@ -5,6 +5,7 @@ import { CombatTracker } from './views/CombatTracker';
 import { PilotSheet } from './views/PilotSheet';
 import { MechSheet } from './views/MechSheet';
 import { DataPanel } from './views/DataPanel';
+import { ActionsView } from './views/ActionsView';
 
 function getRoute() {
   return window.location.hash || '#combat';
@@ -26,6 +27,7 @@ export function App() {
           {route === '#combat' && <CombatTracker />}
           {route === '#pilot' && <PilotSheet />}
           {route === '#mech' && <MechSheet />}
+          {route === '#actions' && <ActionsView />}
           {route === '#data' && <DataPanel />}
         </main>
         <Nav current={route} />

@@ -123,6 +123,16 @@ export interface LancerCoreBonus {
   description?: string;
 }
 
+export interface LancerAction {
+  id: string;
+  name: string;
+  activation: string;
+  terse?: string;
+  detail: string;
+  pilot?: boolean;
+  hidden?: boolean;
+}
+
 // ─── Exported typed collections ──────────────────────────────────────────────
 
 export const frames: LancerFrame[] = (ld.frames as LancerFrame[]).filter(
@@ -134,6 +144,10 @@ export const talents: LancerTalent[] = ld.talents as LancerTalent[];
 export const skills: LancerSkill[] = ld.skills as LancerSkill[];
 export const tagDefs: LancerTagDef[] = ld.tags as LancerTagDef[];
 export const coreBonuses: LancerCoreBonus[] = ld.core_bonuses as LancerCoreBonus[];
+// Filter out hidden entries and NPC-only variants
+export const actions: LancerAction[] = (ld.actions as LancerAction[]).filter(
+  (a) => !a.hidden && !a.id.endsWith('_npc'),
+);
 
 export function getFrame(id: string): LancerFrame | undefined {
   return frames.find((f) => f.id === id);
