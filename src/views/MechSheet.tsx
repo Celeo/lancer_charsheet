@@ -6,8 +6,11 @@ import {
   getFrame,
   getWeapon,
   getSystem,
+  getTag,
+  getCoreBonus,
   weaponsForMount,
   systems as allSystems,
+  coreBonuses as allCoreBonuses,
   mountSlots,
 } from '../game-data';
 
@@ -15,6 +18,7 @@ export function MechSheet() {
   const { character, derived, updateMech } = useCharacter();
   const { mech } = character;
   const [sysSearch, setSysSearch] = useState('');
+  const [cbSearch, setCbSearch] = useState('');
 
   const frame = getFrame(mech.frameId);
 
@@ -40,6 +44,18 @@ export function MechSheet() {
     updateMech({ systems: mech.systems.filter((s) => s !== id) });
   }
 
+  const activeCbs = mech.coreBonuses ?? [];
+
+  function addCoreBonus(id: string) {
+    if (activeCbs.includes(id)) return;
+    updateMech({ coreBonuses: [...activeCbs, id] });
+    setCbSearch('');
+  }
+
+  function removeCoreBonus(id: string) {
+    updateMech({ coreBonuses: activeCbs.filter((cb) => cb !== id) });
+  }
+
   const usedSp = mech.systems.reduce((acc, id) => {
     const sys = getSystem(id);
     return acc + (sys?.sp ?? 0);
@@ -47,6 +63,10 @@ export function MechSheet() {
 
   const filteredSystems = allSystems.filter(
     (s) => !mech.systems.includes(s.id) && s.name.toLowerCase().includes(sysSearch.toLowerCase()),
+  );
+
+  const filteredCoreBonuses = allCoreBonuses.filter(
+    (cb) => !activeCbs.includes(cb.id) && cb.name.toLowerCase().includes(cbSearch.toLowerCase()),
   );
 
   return (
@@ -207,10 +227,26 @@ export function MechSheet() {
                               </div>
                             )}
                             {selected.tags && selected.tags.length > 0 && (
-                              <div class="text-base-content/60">
-                                {selected.tags
-                                  .map((t) => t.id.replace('tg_', '').replace(/_/g, ' '))
-                                  .join(' · ')}
+                              <div class="flex flex-wrap gap-1 mt-0.5">
+                                {selected.tags.map((t) => {
+                                  const def = getTag(t.id);
+                                  const valStr = t.val !== undefined ? String(t.val) : '';
+                                  const label = def
+                                    ? def.name.replace(/{VAL}/g, valStr)
+                                    : t.id.replace('tg_', '').replace(/_/g, ' ');
+                                  const tooltip = def?.description
+                                    ? def.description.replace(/{VAL}/g, valStr)
+                                    : label;
+                                  return (
+                                    <span
+                                      key={t.id}
+                                      class="tooltip tooltip-top before:max-w-[18rem] before:text-left before:whitespace-normal font-mono text-[0.6rem] px-1 py-0.5 bg-base-300 rounded text-primary/80 cursor-help"
+                                      data-tip={tooltip}
+                                    >
+                                      {label}
+                                    </span>
+                                  );
+                                })}
                               </div>
                             )}
                           </div>
@@ -288,6 +324,68 @@ export function MechSheet() {
                       </div>
                     </div>
                     <div class="text-base-content/50 shrink-0 font-bold">{s.sp}SP</div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Core Bonuses ── */}
+      <section>
+        <div class="section-label">// CORE BONUSES</div>
+        <div class="card bg-base-200 p-4 space-y-3">
+          {activeCbs.map((id) => {
+            const cb = getCoreBonus(id);
+            if (!cb) return null;
+            return (
+              <div
+                key={id}
+                class="flex items-start gap-2 border-b border-base-300/50 pb-2 last:border-0 last:pb-0"
+              >
+                <button
+                  onClick={() => removeCoreBonus(id)}
+                  class="text-error/60 hover:text-error text-xs font-mono shrink-0 mt-0.5"
+                >
+                  ✕
+                </button>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="text-sm font-mono font-bold text-base-content/80 truncate">
+                      {cb.name}
+                    </span>
+                    <span class="text-xs font-mono text-base-content/40 shrink-0">{cb.source}</span>
+                  </div>
+                  <p class="text-[0.65rem] font-mono text-base-content/50 mt-0.5 leading-relaxed">
+                    {cb.effect}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Add core bonus */}
+          <div class="space-y-1.5">
+            <input
+              type="text"
+              placeholder="Search core bonuses..."
+              value={cbSearch}
+              onInput={(e) => setCbSearch((e.target as HTMLInputElement).value)}
+              class="input input-sm w-full font-mono"
+            />
+            {cbSearch && filteredCoreBonuses.length > 0 && (
+              <div class="bg-base-300 rounded overflow-hidden max-h-48 overflow-y-auto">
+                {filteredCoreBonuses.slice(0, 10).map((cb) => (
+                  <button
+                    key={cb.id}
+                    onClick={() => addCoreBonus(cb.id)}
+                    class="flex w-full text-left px-3 py-2 text-xs font-mono hover:bg-primary/20 transition-colors gap-2 items-start"
+                  >
+                    <div class="flex-1 min-w-0">
+                      <div class="font-bold text-base-content truncate">{cb.name}</div>
+                      <div class="text-base-content/60 text-[0.6rem]">[{cb.source}]</div>
+                    </div>
                   </button>
                 ))}
               </div>

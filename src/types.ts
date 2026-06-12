@@ -34,6 +34,7 @@ export interface MechConfig {
   name: string;
   mounts: MountWeaponSlot[]; // one entry per mount on the frame
   systems: string[]; // system IDs installed
+  coreBonuses?: string[]; // core bonus IDs (optional for backward compat)
 }
 
 export interface CombatState {
