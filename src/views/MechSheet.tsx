@@ -19,6 +19,7 @@ export function MechSheet() {
   const { mech } = character;
   const [sysSearch, setSysSearch] = useState('');
   const [cbSearch, setCbSearch] = useState('');
+  const [expandedTag, setExpandedTag] = useState<string | null>(null);
 
   const frame = getFrame(mech.frameId);
 
@@ -227,26 +228,50 @@ export function MechSheet() {
                               </div>
                             )}
                             {selected.tags && selected.tags.length > 0 && (
-                              <div class="flex flex-wrap gap-1 mt-0.5">
-                                {selected.tags.map((t) => {
+                              <div class="mt-0.5">
+                                <div class="flex flex-wrap gap-1">
+                                  {selected.tags.map((t) => {
+                                    const def = getTag(t.id);
+                                    const valStr = t.val !== undefined ? String(t.val) : '';
+                                    const label = def
+                                      ? def.name.replace(/{VAL}/g, valStr)
+                                      : t.id.replace('tg_', '').replace(/_/g, ' ');
+                                    const key = `${mountIdx}-${slotIdx}-${t.id}`;
+                                    const isOpen = expandedTag === key;
+                                    return (
+                                      <button
+                                        key={t.id}
+                                        onClick={() => setExpandedTag(isOpen ? null : key)}
+                                        class={`font-mono text-[0.6rem] px-1.5 py-0.5 rounded transition-colors ${
+                                          isOpen
+                                            ? 'bg-primary text-primary-content'
+                                            : 'bg-base-300 text-primary/80 hover:bg-primary/20'
+                                        }`}
+                                      >
+                                        {label}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                                {(() => {
+                                  if (!expandedTag?.startsWith(`${mountIdx}-${slotIdx}-`))
+                                    return null;
+                                  const tagId = expandedTag.slice(`${mountIdx}-${slotIdx}-`.length);
+                                  const t = selected.tags?.find((x) => x.id === tagId);
+                                  if (!t) return null;
                                   const def = getTag(t.id);
+                                  if (!def?.description) return null;
                                   const valStr = t.val !== undefined ? String(t.val) : '';
-                                  const label = def
-                                    ? def.name.replace(/{VAL}/g, valStr)
-                                    : t.id.replace('tg_', '').replace(/_/g, ' ');
-                                  const tooltip = def?.description
-                                    ? def.description.replace(/{VAL}/g, valStr)
-                                    : label;
                                   return (
-                                    <span
-                                      key={t.id}
-                                      class="tooltip tooltip-top before:max-w-[18rem] before:text-left before:whitespace-normal font-mono text-[0.6rem] px-1 py-0.5 bg-base-300 rounded text-primary/80 cursor-help"
-                                      data-tip={tooltip}
-                                    >
-                                      {label}
-                                    </span>
+                                    <div class="mt-1.5 px-2 py-1.5 bg-base-300 rounded text-[0.65rem] font-mono text-base-content/70 leading-relaxed">
+                                      <span class="text-primary/70 font-bold">
+                                        {def.name.replace(/{VAL}/g, valStr)}
+                                      </span>
+                                      {' — '}
+                                      {def.description.replace(/{VAL}/g, valStr)}
+                                    </div>
                                   );
-                                })}
+                                })()}
                               </div>
                             )}
                           </div>
