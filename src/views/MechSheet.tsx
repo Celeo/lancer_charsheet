@@ -66,8 +66,7 @@ export function MechSheet() {
   );
 
   const filteredCoreBonuses = allCoreBonuses.filter(
-    (cb) =>
-      !activeCbs.includes(cb.id) && cb.name.toLowerCase().includes(cbSearch.toLowerCase()),
+    (cb) => !activeCbs.includes(cb.id) && cb.name.toLowerCase().includes(cbSearch.toLowerCase()),
   );
 
   return (
