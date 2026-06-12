@@ -20,7 +20,7 @@ export function Nav({ current }: NavProps) {
             <a
               key={hash}
               href={hash}
-              class={`flex-none min-w-[4.5rem] flex flex-col items-center gap-0.5 py-2 text-xs font-mono tracking-wider transition-colors
+              class={`flex-none min-w-[4.5rem] sm:flex-1 flex flex-col items-center gap-0.5 py-2 text-xs font-mono tracking-wider transition-colors
                 ${active ? 'text-primary' : 'text-base-content/50 hover:text-base-content'}`}
             >
               <span class="text-base leading-none">{icon}</span>
