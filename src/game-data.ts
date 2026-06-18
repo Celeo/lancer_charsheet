@@ -186,15 +186,33 @@ export function getCoreBonus(id: string): LancerCoreBonus | undefined {
   return coreBonuses.find((cb) => cb.id === id);
 }
 
-// Match a UI status label (e.g. "Slow", "Lock On") to its lancer-data entry.
+// Statuses present in the UI but missing from lancer-data's statuses.json.
+const SUPPLEMENTAL_STATUSES: LancerStatusDef[] = [
+  {
+    id: 'bolstered',
+    name: 'Bolstered',
+    type: 'Status',
+    effects:
+      'BOLSTERED characters receive +2 accuracy on the next skill check or save they make, until the end of their next turn. A character can only benefit from one BOLSTER at a time.',
+  },
+  {
+    id: 'braced',
+    name: 'Braced',
+    type: 'Status',
+    effects:
+      'A BRACED character counts as having RESISTANCE to all damage, burn, and heat from the triggering attack, and until the end of their next turn all other attacks against them are made at +1 difficulty. They cannot take reactions until the end of their next turn, and on that turn may take only a single quick action — no OVERCHARGE, normal movement, full actions, or free actions.',
+  },
+];
+
+// Match a UI status label (e.g. "Slow", "Lock On") to its lancer-data entry,
+// falling back to supplemental definitions for statuses not in lancer-data.
 export function getStatus(name: string): LancerStatusDef | undefined {
   const want = name.toLowerCase();
-  return statusDefs.find(
-    (s) =>
-      s.name.toLowerCase() === want ||
-      // "Slow" UI label maps to the "Slowed" status entry
-      s.name.toLowerCase().startsWith(want),
-  );
+  const match = (s: LancerStatusDef) =>
+    s.name.toLowerCase() === want ||
+    // "Slow" UI label maps to the "Slowed" status entry
+    s.name.toLowerCase().startsWith(want);
+  return statusDefs.find(match) ?? SUPPLEMENTAL_STATUSES.find(match);
 }
 
 // ─── Weapons filtered by what a mount accepts ────────────────────────────────
