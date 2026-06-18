@@ -1,7 +1,7 @@
 import { useCharacter } from '../store';
 import { Counter } from '../components/Counter';
 import { BoxTracker } from '../components/BoxTracker';
-import { MECH_STATUSES } from '../game-data';
+import { MECH_STATUSES, getStatus } from '../game-data';
 
 export function CombatTracker() {
   const { character, derived, updateCombat, resetCombat } = useCharacter();
@@ -178,6 +178,24 @@ export function CombatTracker() {
             );
           })}
         </div>
+        {combat.statuses.length > 0 && (
+          <ul class="mt-3 space-y-1.5">
+            {combat.statuses.map((s) => {
+              const def = getStatus(s);
+              if (!def?.effects) return null;
+              return (
+                <li key={s} class="text-[0.7rem] leading-relaxed text-primary/80 flex gap-1.5">
+                  <span class="text-primary/50">•</span>
+                  <span>
+                    <span class="font-bold">{def.name}</span>
+                    {' — '}
+                    <span dangerouslySetInnerHTML={{ __html: def.effects }} />
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </section>
     </div>
   );

@@ -133,6 +133,14 @@ export interface LancerAction {
   hidden?: boolean;
 }
 
+export interface LancerStatusDef {
+  id: string;
+  name: string;
+  type: 'Status' | 'Condition';
+  terse?: string;
+  effects: string;
+}
+
 // ─── Exported typed collections ──────────────────────────────────────────────
 
 export const frames: LancerFrame[] = (ld.frames as LancerFrame[]).filter(
@@ -144,6 +152,7 @@ export const talents: LancerTalent[] = ld.talents as LancerTalent[];
 export const skills: LancerSkill[] = ld.skills as LancerSkill[];
 export const tagDefs: LancerTagDef[] = ld.tags as LancerTagDef[];
 export const coreBonuses: LancerCoreBonus[] = ld.core_bonuses as LancerCoreBonus[];
+export const statusDefs: LancerStatusDef[] = ld.statuses as LancerStatusDef[];
 // Filter out hidden entries and NPC-only variants
 export const actions: LancerAction[] = (ld.actions as LancerAction[]).filter(
   (a) => !a.hidden && !a.id.endsWith('_npc'),
@@ -175,6 +184,17 @@ export function getTag(id: string): LancerTagDef | undefined {
 
 export function getCoreBonus(id: string): LancerCoreBonus | undefined {
   return coreBonuses.find((cb) => cb.id === id);
+}
+
+// Match a UI status label (e.g. "Slow", "Lock On") to its lancer-data entry.
+export function getStatus(name: string): LancerStatusDef | undefined {
+  const want = name.toLowerCase();
+  return statusDefs.find(
+    (s) =>
+      s.name.toLowerCase() === want ||
+      // "Slow" UI label maps to the "Slowed" status entry
+      s.name.toLowerCase().startsWith(want),
+  );
 }
 
 // ─── Weapons filtered by what a mount accepts ────────────────────────────────
