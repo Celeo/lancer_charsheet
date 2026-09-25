@@ -32,7 +32,7 @@ src/
 
 **Game data:** `@massif/lancer-data` (the official Massif Press package) is imported in `game-data.ts` with a `// @ts-ignore` because it ships no types. All consumers import from `game-data.ts`, never directly from `@massif/lancer-data`.
 
-**Lancer rules math** lives entirely in `game-data.ts → calcDerived()`. Key formulas: GRIT = floor(LL/2); mech HP = frame HP + GRIT×2 + Hull×2 + system HP bonuses (e.g. Personalizations +2); heat cap = frame heatcap + Engineering; repair cap = frame repcap + GRIT; evasion = frame evasion + Agility; E-def = frame edef + Systems; save target = 10 + GRIT.
+**Lancer rules math** lives entirely in `game-data.ts → calcDerived()`. Key formulas: GRIT = ceil(LL/2); mech HP = frame HP + GRIT + Hull×2 + system HP bonuses (e.g. Personalizations +2); heat cap = frame heatcap + Engineering; repair cap = frame repcap + floor(Hull/2); evasion = frame evasion + Agility; speed = frame speed + floor(Agility/2); E-def and tech attack = frame + Systems; SP = frame SP + GRIT + floor(Systems/2); save target = frame save + GRIT + core bonus `save` bonuses; attack bonus = GRIT; armor capped at 4; pilot HP = 6 + GRIT.
 
 **Styling:** Tailwind v4 via `@tailwindcss/vite` plugin (no `tailwind.config.js`). daisyUI v5 loaded via `@plugin "daisyui"` in `index.css` with the `night` theme as the base. Lancer-specific color overrides sit in `:root` in `index.css` (higher specificity than daisyUI's `:where(:root)`). The custom `.section-label` utility class is defined in `index.css`.
 
@@ -45,5 +45,5 @@ src/
 ## Key constraints
 
 - `lancer-data` description fields contain raw HTML (`<br>`, `<ul>`, etc.) — `dangerouslySetInnerHTML` is intentional in the mech sheet view.
-- Mount slot logic (`mountSlots()`, `weaponsForMount()`) in `game-data.ts` handles the Lancer mount-type → accepted weapon sizes mapping. Flex mounts are currently treated as a single Main slot.
+- Mount slot logic (`mountSlots()`, `weaponsForMount()`) in `game-data.ts` handles the Lancer mount-type → accepted weapon sizes mapping. Flex mounts are treated like Main/Aux (1 Main + 1 Aux, or 2 Aux). Superheavy weapons (need a Heavy mount plus another mount) are not yet supported.
 - State shape is versioned by the localStorage key. Changing `Character` in ways that break deserialization requires bumping `STORAGE_KEY` in `store.tsx` and providing migration or a new default.

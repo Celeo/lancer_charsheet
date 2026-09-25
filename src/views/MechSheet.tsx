@@ -118,7 +118,7 @@ export function MechSheet() {
           <StatRow label="SPEED" value={derived.mechSpeed} />
           <StatRow label="SENSORS" value={derived.mechSensors} />
           <StatRow label="SAVE TARGET" value={derived.mechSave} />
-          <StatRow label="ATTACK BONUS" value={`+${derived.grit}`} />
+          <StatRow label="ATTACK BONUS" value={`+${derived.mechAttack}`} />
           <StatRow label="TECH ATTACK" value={`+${derived.mechTechAttack}`} />
           <StatRow label="SP" value={`${usedSp} / ${derived.mechSp}`} />
           <StatRow label="SIZE" value={derived.mechSize} />
@@ -194,7 +194,7 @@ export function MechSheet() {
                   {slots.map((slotSize, slotIdx) => {
                     const selectedId = mountData?.weapons[slotIdx] ?? null;
                     const selected = selectedId ? getWeapon(selectedId) : null;
-                    const options = weaponsForMount(slotSize === 'Flex' ? 'Main' : slotSize);
+                    const options = weaponsForMount(slotSize);
 
                     return (
                       <div key={slotIdx} class="space-y-1 mb-2 last:mb-0">

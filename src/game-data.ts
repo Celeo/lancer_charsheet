@@ -121,6 +121,7 @@ export interface LancerCoreBonus {
   source: string;
   effect: string;
   description?: string;
+  bonuses?: Array<{ id: string; val: number | string }>;
 }
 
 export interface LancerAction {
@@ -221,7 +222,6 @@ const MOUNT_ACCEPTS: Record<string, string[]> = {
   Auxiliary: ['Auxiliary'],
   Main: ['Main', 'Auxiliary'],
   Heavy: ['Heavy', 'Main', 'Auxiliary'],
-  Flex: ['Main', 'Auxiliary'],
   'Aux/Aux': ['Auxiliary'],
   'Main/Aux': ['Main', 'Auxiliary'],
   Integrated: [],
@@ -239,9 +239,8 @@ export function mountSlots(mountType: string): string[] {
     case 'Aux/Aux':
       return ['Auxiliary', 'Auxiliary'];
     case 'Main/Aux':
+    case 'Flex': // 1 Main + 1 Aux, or 2 Aux (a Main slot also accepts Aux)
       return ['Main', 'Auxiliary'];
-    case 'Flex':
-      return ['Flex']; // special handling in UI
     default:
       return [mountType];
   }
@@ -265,6 +264,11 @@ export function calcDerived(char: Character): DerivedStats {
   const frame = getFrame(char.mech.frameId);
   const fs = frame?.stats;
 
+  const coreSaveBonus = (char.mech.coreBonuses ?? []).reduce((sum, id) => {
+    const bonus = getCoreBonus(id)?.bonuses?.find((b) => b.id === 'save');
+    return sum + (bonus ? Number(bonus.val) : 0);
+  }, 0);
+
   const systemHpBonus = char.mech.systems.reduce((sum, id) => {
     const bonus = getSystem(id)?.bonuses?.find((b) => b.id === 'hp');
     return sum + (bonus ? Number(bonus.val) : 0);
@@ -284,12 +288,13 @@ export function calcDerived(char: Character): DerivedStats {
     mechEvasion: (fs?.evasion ?? 8) + agility,
     mechEdef: (fs?.edef ?? 8) + systems,
     mechSpeed: (fs?.speed ?? 4) + Math.floor(agility / 2),
-    mechSave: 10 + grit,
+    mechSave: (fs?.save ?? 10) + grit + coreSaveBonus,
+    mechAttack: grit,
     mechTechAttack: (fs?.tech_attack ?? 0) + systems,
     mechSensors: fs?.sensor_range ?? 10,
     mechSp: (fs?.sp ?? 6) + grit + Math.floor(systems / 2),
     mechSize: fs?.size ?? 1,
-    mechArmor: fs?.armor ?? 0,
+    mechArmor: Math.min(fs?.armor ?? 0, 4),
   };
 }
 
@@ -298,19 +303,23 @@ export function calcDerived(char: Character): DerivedStats {
 export const MECH_STATUSES = [
   'Bolstered',
   'Braced',
-  'Downlocked',
+  'Danger Zone',
+  'Engaged',
   'Exposed',
   'Hidden',
+  'Immobilized',
+  'Impaired',
   'Invisible',
   'Jammed',
   'Lock On',
   'Prone',
   'Shredded',
+  'Shut Down',
   'Slow',
   'Stunned',
 ] as const;
 
-export const PILOT_STATUSES = ['Bleeding Out', 'Down and Out', 'Stunned'] as const;
+export const PILOT_STATUSES = ['Down and Out', 'Stunned'] as const;
 
 export type MechStatus = (typeof MECH_STATUSES)[number];
 export type PilotStatus = (typeof PILOT_STATUSES)[number];
@@ -339,14 +348,14 @@ export const DEFAULT_CHARACTER: Character = {
     coreBonuses: [],
   },
   combat: {
-    mechHp: 12, // Everest HP at LL0 (10 + 0*2)
+    mechHp: 10, // Everest HP at LL0 (10 + GRIT 0 + Hull 0)
     mechHeat: 0,
     structure: 4,
     stress: 4,
     repairsUsed: 0,
     coreActive: false,
     burn: 0,
-    pilotHp: 10,
+    pilotHp: 6, // 6 + GRIT at LL0
     statuses: [],
   },
 };

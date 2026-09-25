@@ -69,6 +69,7 @@ export interface DerivedStats {
   mechEdef: number;
   mechSpeed: number;
   mechSave: number;
+  mechAttack: number;
   mechTechAttack: number;
   mechSensors: number;
   mechSp: number;
