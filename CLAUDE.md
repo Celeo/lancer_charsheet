@@ -45,5 +45,5 @@ src/
 ## Key constraints
 
 - `lancer-data` description fields contain raw HTML (`<br>`, `<ul>`, etc.) — `dangerouslySetInnerHTML` is intentional in the mech sheet view.
-- Mount slot logic (`mountSlots()`, `weaponsForMount()`) in `game-data.ts` handles the Lancer mount-type → accepted weapon sizes mapping. Flex mounts are treated like Main/Aux (1 Main + 1 Aux, or 2 Aux). Superheavy weapons (need a Heavy mount plus another mount) are not yet supported.
+- Mount slot logic (`mountSlots()`, `weaponsForMount()`) in `game-data.ts` handles the Lancer mount-type → accepted weapon sizes mapping. Flex mounts take 1 Main or up to 2 Aux (slot 0 accepts Main/Aux, slot 1 Aux; `MechSheet` blocks a Main weapon alongside a second weapon). Superheavy weapons (need a Heavy mount plus another mount) are not yet supported.
 - State shape is versioned by the localStorage key. Changing `Character` in ways that break deserialization requires bumping `STORAGE_KEY` in `store.tsx` and providing migration or a new default.

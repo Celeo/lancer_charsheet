@@ -194,7 +194,15 @@ export function MechSheet() {
                   {slots.map((slotSize, slotIdx) => {
                     const selectedId = mountData?.weapons[slotIdx] ?? null;
                     const selected = selectedId ? getWeapon(selectedId) : null;
-                    const options = weaponsForMount(slotSize);
+                    const isFlex = mountType === 'Flex';
+                    const firstId = mountData?.weapons[0] ?? null;
+                    const secondId = mountData?.weapons[1] ?? null;
+                    // Flex: one Main, or up to two Aux
+                    const blocked =
+                      isFlex && slotIdx === 1 && getWeapon(firstId ?? '')?.mount === 'Main';
+                    const options = weaponsForMount(slotSize).filter(
+                      (w) => !(isFlex && slotIdx === 0 && secondId && w.mount !== 'Auxiliary'),
+                    );
 
                     return (
                       <div key={slotIdx} class="space-y-1 mb-2 last:mb-0">
@@ -205,6 +213,7 @@ export function MechSheet() {
                         )}
                         <select
                           value={selectedId ?? ''}
+                          disabled={blocked}
                           onChange={(e) => {
                             const v = (e.target as HTMLSelectElement).value;
                             setWeapon(mountIdx, slotIdx, v || null);

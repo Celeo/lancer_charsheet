@@ -222,6 +222,7 @@ const MOUNT_ACCEPTS: Record<string, string[]> = {
   Auxiliary: ['Auxiliary'],
   Main: ['Main', 'Auxiliary'],
   Heavy: ['Heavy', 'Main', 'Auxiliary'],
+  Flex: ['Main', 'Auxiliary'],
   'Aux/Aux': ['Auxiliary'],
   'Main/Aux': ['Main', 'Auxiliary'],
   Integrated: [],
@@ -239,8 +240,9 @@ export function mountSlots(mountType: string): string[] {
     case 'Aux/Aux':
       return ['Auxiliary', 'Auxiliary'];
     case 'Main/Aux':
-    case 'Flex': // 1 Main + 1 Aux, or 2 Aux (a Main slot also accepts Aux)
       return ['Main', 'Auxiliary'];
+    case 'Flex':
+      return ['Flex', 'Auxiliary']; // 1 Main, or up to 2 Aux — see MechSheet for enforcement
     default:
       return [mountType];
   }
